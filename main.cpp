@@ -3,6 +3,7 @@
 #include <QObject>
 #include <QStringList>
 #include <QProcess>
+#include <QDir>
 
 int main(int argc, char *argv[])
 {
@@ -26,6 +27,7 @@ int main(int argc, char *argv[])
         cmdLine += argv[i];
         cmdLine += " ";
     }
+
     cmdLine.remove(cmdLine.lastIndexOf(" "), 1);
 
     // разберем параметры
@@ -35,16 +37,30 @@ int main(int argc, char *argv[])
     while (it.hasNext())
     {
         QStringList args = it.next().split(" ");
-        QString program = args.takeFirst();
+        args.insert(0, "/C");
+        //args.insert(0, "cmd.exe");
+
+        QString exeName = "cmd.exe"; //args.takeFirst();
+
+
+        QString program = QDir::toNativeSeparators(QDir::currentPath() + "\\" + exeName);
+        qDebug() << program << args;
+
+        //int exitCode = QProcess::execute(exeName, args);
+        //qDebug() << exitCode;
+
         QProcess p;
+        p.setProcessEnvironment(QProcessEnvironment::systemEnvironment());
+        p.start(exeName, args);
 
-        p.start(program, args);
-
-        while (!p.waitForFinished())
+        p.waitForReadyRead();
+        while (!p.waitForFinished(10000))
         {
+            //qDebug() << "work!";
+            //a.processEvents();
         }
-    }
 
+    }
 
 
     QCoreApplication::quit();

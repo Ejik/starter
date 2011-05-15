@@ -24,7 +24,7 @@ BEGIN
         BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
-            VALUE "FileDescription", "startter\0"
+            VALUE "FileDescription", "starter\0"
             VALUE "FileVersion", "1, 0, 0, 1\0"
             VALUE "InternalName", "starter\0"
             VALUE "LegalCopyright", "Copyright (C) Чумак С.Н. 2010\0"
